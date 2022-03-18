@@ -1,23 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React, { useState, useEffect } from "react";
 
 function App() {
+  const [quote, setQuote] = useState("");
+  const [author, setAuthor] = useState("");
+  useEffect(() => {
+    fetch("http://api.quotable.io/random")
+      .then((res) => res.json())
+      .then((quote) => {
+        setQuote(quote.content);
+        setAuthor(quote.author);
+      });
+  }, []);
+  const getNewQuote = () => {
+    fetch("http://api.quotable.io/random")
+      .then((res) => res.json())
+      .then((quote) => {
+        setQuote(quote.content);
+        setAuthor(quote.author);
+      });
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <section className="quote">
+        <h2>
+          <i className="fa-solid fa-quote-left"></i>
+          &nbsp;
+          {quote}
+          &nbsp;
+          <i className="fa-solid fa-quote-right"></i>
+        </h2>
+        <br />
+        <small>-{author}-</small>
+      </section>
+      <br />
+      <div className="container-fluid">
+        <button className="btn btn-dark" onClick={getNewQuote}>
+          Get New Quote
+        </button>
+      </div>
     </div>
   );
 }
